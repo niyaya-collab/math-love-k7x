@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#2a1038">
+  <meta name="description" content="آزمایشگاه معادله‌ی عشق، برای نیایش">
+  <title>آزمایشگاه معادله‌ی عشق</title>
+  <link rel="icon" href="./favicon.ico" sizes="32x32">
+  <link rel="icon" href="./assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./assets/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./assets/vendor/katex/katex.min.js"></script>
+</head>
+<body>
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div id="floaters" aria-hidden="true"></div>
+  <div class="app">
+    <header class="top">
+      <div class="tools-top">
+        <div class="langs" role="group" aria-label="language">
+          <button id="lang-fa" type="button" aria-pressed="true">FA</button>
+          <button id="lang-en" type="button" aria-pressed="false">EN</button>
+        </div>
+        <button id="digits" type="button" aria-label="اعداد">۱۲</button>
+        <button id="sound" type="button" aria-pressed="true" aria-label="صدا روشن است">🔊</button>
+      </div>
+      <p class="eyebrow" data-i18n="eyebrow">برای نیایش</p>
+      <div class="orbit"><h1 data-i18n="title">آزمایشگاه معادله‌ی عشق</h1></div>
+      <p id="nick" class="nick">ناناسی</p>
+    </header>
+    <main class="stage">
+      <section id="board" class="board" aria-labelledby="board-label">
+        <h2 id="board-label" class="sr" data-i18n="board">تخته‌ی معادله</h2>
+        <svg class="axes" viewBox="0 0 120 80" aria-hidden="true">
+          <path d="M8 68H112M18 8V74" />
+          <path d="M112 68l-6-3M112 68l-6 3M18 8l-3 6M18 8l3 6" />
+        </svg>
+        <div class="expr-wrap">
+          <div id="expr" class="expr" dir="ltr"></div>
+        </div>
+      </section>
+      <p id="toast" class="toast" aria-live="polite"></p>
+      <div class="actions">
+        <button id="solve" class="solve" type="button" data-i18n="solve">حل کن ✨</button>
+        <button id="hint" class="ghost" type="button" data-i18n="hint">سرنخ 💡</button>
+      </div>
+      <div class="editbar">
+        <button id="backspace" type="button" data-i18n-label="delete" aria-label="حذف">⌫</button>
+        <button id="cursor-left" type="button" data-i18n-label="left" aria-label="مکان‌نما به چپ">◀</button>
+        <button id="cursor-right" type="button" data-i18n-label="right" aria-label="مکان‌نما به راست">▶</button>
+        <button id="leave" type="button" data-i18n-label="leave" aria-label="بیرون از این بخش">⤴</button>
+        <button id="undo" type="button" data-i18n-label="undo" aria-label="واگرد">↶</button>
+        <button id="redo" type="button" data-i18n-label="redo" aria-label="ازنو">↷</button>
+        <button id="clear" class="clear" type="button" data-i18n="clear">پاک کردن همه</button>
+      </div>
+    </main>
+    <section id="tray" class="tray" aria-label="tiles"></section>
+  </div>
+
+  <div id="welcome" class="overlay" hidden>
+    <article class="sheet welcome">
+      <p data-i18n="welcome">نیایش جانم، اینجا یه آزمایشگاه کوچیکه که فقط برای توئه 💗 هر چی دلت خواست بچین. — یاسین</p>
+      <button id="start" class="solve" type="button" data-i18n="start">شروع</button>
+    </article>
+  </div>
+
+  <div id="confirm" class="overlay" hidden>
+    <article class="sheet confirm">
+      <p data-i18n="confirm">تخته پاک شود؟</p>
+      <div class="row">
+        <button id="confirm-yes" class="solve" type="button" data-i18n="yes">بله، پاک کن</button>
+        <button id="confirm-no" class="ghost" type="button" data-i18n="no">نه، بماند</button>
+      </div>
+    </article>
+  </div>
+
+  <div id="result" class="overlay" hidden>
+    <canvas id="heart" width="640" height="640" aria-hidden="true"></canvas>
+    <article id="result-card" class="sheet card" hidden>
+      <p class="eyebrow" data-i18n="theorem">قضیه</p>
+      <div id="katex-line" class="katex-line" dir="ltr"></div>
+      <p id="theorem-text"></p>
+      <p class="eyebrow" data-i18n="proof">اثبات</p>
+      <p id="proof-text"></p>
+      <p class="qed">∎</p>
+      <p id="signature"></p>
+      <div class="row">
+        <button id="continue" class="ghost" type="button" data-i18n="continue">ادامه</button>
+        <button id="save-card" class="ghost" type="button" data-i18n="save">ذخیره‌ی کارت 📸</button>
+        <button id="open-notebook" class="ghost" type="button" data-i18n="notebook">دفترچه 📓</button>
+      </div>
+    </article>
+  </div>
+
+  <div id="notebook" class="overlay" hidden>
+    <div class="sheet notebook">
+      <div id="notebook-body"></div>
+    </div>
+  </div>
+  <input id="backup-file" type="file" accept="application/json,.json" hidden>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
